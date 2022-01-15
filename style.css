@@ -1,0 +1,52 @@
+body{
+    font-family: 'Courier New', Courier, monospace;
+    width:100vw;
+    height: 80vh;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+h1 {
+
+    font-size: 24pt;
+    color: navy;
+}
+#score{
+    font-size: 18pt;
+}
+.options{
+    margin: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+    gap: 50px;
+    width: 100vw;
+    flex: 0 0 200px;
+}
+.option{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: black 3px solid;
+    border-radius: 14px;
+    height: 100px;
+    width: 200px;
+    margin: 0px;
+    padding:20px;
+    text-align: center;
+    transition: All .07s ease;
+}
+.selected{
+    background-color: turquoise;
+    border: navy 5px solid;
+    font-size: 1.4em;
+
+
+}
+.plays, .outcome{
+    min-height: 50px;
+}

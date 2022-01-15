@@ -1,21 +1,35 @@
 
+const gameOptions = ['rock', 'paper', 'scissors'];
+const outcome = document.querySelector('.outcome');
+const computer = document.querySelector('.plays');
+const buttons = document.querySelectorAll('.option');
+const scoreDisplay = document.querySelector('#score');
 
-// Start Game, play five rounds
-function startGame(){
-    let gameOptions = ['rock', 'paper', 'scissors'];
-    for(let i = 0; i<5; i++){
-        console.log("Rock, Paper, Scissors!");
-        let userSelection = userPlay();
-        let computerSelection = computerPlay();
-        let outcome = playRound(userSelection, computerSelection);
-        console.log(outcome);
-    }
+let playerScore = 0;
+let computerScore = 0;
+
+function resetGame(){
+    playerScore = 0;
+    computerScore = 0;
 }
-
+function endGame(winner){
+    const gameOverDiv = document.createElement('div');
+    if (winner == 'computer'){ 
+        gameOverDiv.textContent = "Game Over!";
+    } else {
+        gameOverDiv.textContent = "You Win!";
+    }
+    setTimeout(function(){document.body.removeChild(gameOverDiv);}, 3000);
+    resetGame();
+    document.body.appendChild(gameOverDiv);
+}
+function updateScore(){
+    scoreDisplay.textContent = "Score: " + playerScore + " : " + computerScore;
+}
 // Randomly select a play for computer
 function computerPlay(){
     let selection = Math.floor(Math.random() * gameOptions.length);
-    console.log("Computer plays: " + gameOptions[selection]);
+    computer.textContent = "Computer plays: " + gameOptions[selection];
     return gameOptions[selection];
 }
 
@@ -33,41 +47,57 @@ function userPlay(){
 // Compare the two plays to determine the outcome. 
 // Rock beats Scissors, Scissors cuts Paper, Paper covers Rock.
 // Return winner text
-function playRound(userSelection, computerSelection){
-    let winner = '';
+function playRound(userSelection){
+    let computerSelection = computerPlay();
     if (userSelection == computerSelection){
-        return "Tie Game.";
+        outcome.textContent = "Tie Game.";
     } else {
         switch (userSelection){
         case 'rock':
             if (computerSelection == 'paper'){
-                winner = "Computer wins. Paper covers Rock"; 
-                break;
+                outcome.textContent = "Computer wins. Paper covers Rock"; 
+                computerScore++;
             } else {
-                winner = "You win. Rock smashes Scissors!";
+                outcome.textContent = "You win. Rock smashes Scissors!";
+                playerScore++;
             }
             break;
         case 'paper':
             if (computerSelection == 'scissors'){
-                winner = "Computer wins. Scissors cut Paper!";
-                break;
+                outcome.textContent = "Computer wins. Scissors cut Paper!";
+                computerScore++;
             } else {
-                winner = "You win. Paper covers Rock!";
+                outcome.textContent = "You win. Paper covers Rock!";
+                playerScore++;
             }
             break;
         case 'scissors':
             if (computerSelection == 'rock'){
-                winner = "Computer wins. Rock smashes Scissors!";
-                break;
-
+                outcome.textContent = "Computer wins. Rock smashes Scissors!";
+                computerScore++;
             } else {
-                winner = "You win. Scissors cuts Paper!";
+                outcome.textContent = "You win. Scissors cuts Paper!";
+                playerScore++;
             }
             break;
         default:
             console.log("Error.");
         }
-        
-        return winner;
+        document.body.appendChild(computer);
+        document.body.appendChild(outcome);
     }
 }
+updateScore();
+buttons.forEach((button) => {
+    button.addEventListener('click', function (e) {
+        button.classList.add("selected");
+        setTimeout(function() {button.classList.remove("selected");}, 500);
+        playRound(e.target.id);
+        updateScore();
+        if (computerScore == 5){
+           endGame('computer'); 
+        } else if (playerScore == 5){
+            endGame('player');
+        }
+      });
+});
